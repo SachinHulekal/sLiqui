@@ -38,17 +38,6 @@ public class App {
 			String username = prop.getProperty("username");
 			String password = prop.getProperty("password");
 
-			Connection con = DriverManager.getConnection(url, username, password);
-			System.out.println(con);
-
-			Database database = DatabaseFactory.getInstance()
-					.findCorrectDatabaseImplementation(new JdbcConnection(con));
-			Liquibase liquibase = new Liquibase(
-					"C:\\test\\gLiui\\sac\\src\\main\\resources\\changelog.sql",
-					new FileSystemResourceAccessor(),
-					database);
-			liquibase.update("");
-
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
