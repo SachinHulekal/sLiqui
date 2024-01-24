@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
+
+import javax.sql.DataSource;
+
 import java.sql.*;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -21,10 +24,12 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
+import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.FileSystemResourceAccessor;
 
 public class App {
-	public String handleRequest(Context context) throws SQLException, ClassNotFoundException, LiquibaseException {
+	public String handleRequest(Context context)throws SQLException, ClassNotFoundException, LiquibaseException {
+		Liquibase liquibase = null;
 		Properties prop = new Properties();
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -42,19 +47,10 @@ public class App {
 
 			Connection con = DriverManager.getConnection(url, username, password);
 			System.out.println(con);
-			
-			String pathToFile = App.class.getClassLoader().getResource("changelog.xml").getPath();
-	        File file = new File(pathToFile);
-	        System.out.println(file.getAbsolutePath());
 
-		
-	        Database database = DatabaseFactory.getInstance()
-					.findCorrectDatabaseImplementation(new JdbcConnection(con));
-			Liquibase liquibase = new Liquibase(
-					pathToFile,
-					new FileSystemResourceAccessor(),
-					database);
-			liquibase.update("");
+			Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(con));
+	        liquibase = new Liquibase("liquibase/db.changelog.xml", new ClassLoaderResourceAccessor(), database);
+	        liquibase.update("");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
