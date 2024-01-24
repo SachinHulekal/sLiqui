@@ -23,9 +23,10 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.FileSystemResourceAccessor;
 
 public class App {
-	public String handleRequest(Context context) throws SQLException {
+	public String handleRequest(Context context) throws SQLException, ClassNotFoundException {
 		Properties prop = new Properties();
 		try {
+			Class.forName("org.postgresql.Driver");
 			// load a properties file from class path, inside static method
 			prop.load(App.class.getClassLoader().getResourceAsStream("db.properties"));
 
