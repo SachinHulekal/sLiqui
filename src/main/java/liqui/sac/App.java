@@ -23,7 +23,7 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.FileSystemResourceAccessor;
 
 public class App {
-	public String handleRequest(Context context) throws SQLException, LiquibaseException {
+	public String handleRequest(Context context) {
 		Properties prop = new Properties();
 		try {
 			// load a properties file from class path, inside static method
