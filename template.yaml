@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Ftc-client
+Resources:
+  FtcClientFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: liqui.sac.App::handleRequest
+      Runtime: java8
+      CodeUri: ./
