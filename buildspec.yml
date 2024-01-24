@@ -1,18 +1,24 @@
 version: 0.2
-
 phases:
+  install:
+    runtime-versions:
+      java: openjdk8
+  pre_build:
+    commands:
+      - echo Test started on `date`
+      - mvn clean compile test
   build:
     commands:
-      - echo Packaging app on `date`
-      - mvn clean package
-      - aws cloudformation package --template-file template.yaml --s3-bucket wwwb-release --output-template-file output-sam.yaml
+      - echo Build started on `date`
+      - mvn package shade:shade
+      - mv target/sac-0.0.1-SNAPSHOT.jar
+      - unzip sac-0.0.1-SNAPSHOT.jar
+      - rm -rf target tst src buildspec.yml pom.xml sac-0.0.1-SNAPSHOT.jar
+      - aws cloudformation package --template-file template.yaml
   post_build:
     commands:
-      - echo App packaged on `date`.
+      - echo Build completed on `date` !!!
 artifacts:
-  type: jar
   files:
-    - "target/sac-0.0.1-SNAPSHOT.jar"
-    - "template.yaml"
-    - "output-sam.yaml"
-  discard-paths: yes
+    - target/sac-0.0.1-SNAPSHOT.jar
+    - template.yaml

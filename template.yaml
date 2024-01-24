@@ -1,12 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: First Java Lamdba Project
+Description: Ftc-client
 Resources:
-  UserService:
+  test4:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: test4
       Handler: liqui.sac.App::handleRequest
       Runtime: java21
-      CodeUri: ./target/sac-0.0.1-SNAPSHOT.jar
-      Policies: AWSLambdaBasicExecutionRole
+      CodeUri: ./
