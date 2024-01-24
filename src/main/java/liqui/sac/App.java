@@ -23,7 +23,7 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.FileSystemResourceAccessor;
 
 public class App {
-	public String handleRequest(Context context) {
+	public String handleRequest(Context context) throws SQLException {
 		Properties prop = new Properties();
 		try {
 			// load a properties file from class path, inside static method
@@ -37,6 +37,9 @@ public class App {
 			String url = prop.getProperty("url");
 			String username = prop.getProperty("username");
 			String password = prop.getProperty("password");
+
+			Connection con = DriverManager.getConnection(url, username, password);
+			System.out.println(con);
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
