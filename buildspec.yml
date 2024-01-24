@@ -5,7 +5,7 @@ phases:
     commands:
       - echo Packaging app on `date`
       - mvn clean package
-      - aws cloudformation package --template-file template.yaml
+      - aws cloudformation package --template-file template.yaml --s3-bucket wwwb-release --output-template-file output-sam.yaml
   post_build:
     commands:
       - echo App packaged on `date`.

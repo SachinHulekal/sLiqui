@@ -9,6 +9,4 @@ Resources:
       Handler: liqui.sac.App::handleRequest
       Runtime: java21
       CodeUri: ./target/sac-0.0.1-SNAPSHOT.jar
-      MemorySize: 1512
       Policies: AWSLambdaBasicExecutionRole
-      Timeout: 60
