@@ -1,5 +1,6 @@
 package liqui.sac;
 
+import java.io.File;
 /**
  * Hello world!
  *
@@ -23,7 +24,7 @@ import liquibase.exception.LiquibaseException;
 import liquibase.resource.FileSystemResourceAccessor;
 
 public class App {
-	public String handleRequest(Context context) throws SQLException, ClassNotFoundException {
+	public String handleRequest(Context context) throws SQLException, ClassNotFoundException, LiquibaseException {
 		Properties prop = new Properties();
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -41,7 +42,19 @@ public class App {
 
 			Connection con = DriverManager.getConnection(url, username, password);
 			System.out.println(con);
+			
+			String pathToFile = App.class.getClassLoader().getResource("changelog.xml").getPath();
+	        File file = new File(pathToFile);
+	        System.out.println(file.getAbsolutePath());
 
+		
+	        Database database = DatabaseFactory.getInstance()
+					.findCorrectDatabaseImplementation(new JdbcConnection(con));
+			Liquibase liquibase = new Liquibase(
+					pathToFile,
+					new FileSystemResourceAccessor(),
+					database);
+			liquibase.update("");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
