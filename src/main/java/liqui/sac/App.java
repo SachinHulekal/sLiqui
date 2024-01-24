@@ -28,7 +28,7 @@ import liquibase.resource.ClassLoaderResourceAccessor;
 import liquibase.resource.FileSystemResourceAccessor;
 
 public class App {
-	public String handleRequest(Context context)throws SQLException, ClassNotFoundException, LiquibaseException {
+	public String handleRequest(Context context) throws SQLException, ClassNotFoundException, LiquibaseException {
 		Liquibase liquibase = null;
 		Properties prop = new Properties();
 		try {
@@ -48,9 +48,10 @@ public class App {
 			Connection con = DriverManager.getConnection(url, username, password);
 			System.out.println(con);
 
-			Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(new JdbcConnection(con));
-	        liquibase = new Liquibase("liquibase/db.changelog.xml", new ClassLoaderResourceAccessor(), database);
-	        liquibase.update("");
+			Database database = DatabaseFactory.getInstance()
+					.findCorrectDatabaseImplementation(new JdbcConnection(con));
+			liquibase = new Liquibase("liquibase/db.changelog.xml", new ClassLoaderResourceAccessor(), database);
+			liquibase.update("");
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
